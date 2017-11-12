@@ -35,13 +35,17 @@ defmodule Timecop.Clock do
   def stop(clock) when is_pid(clock), do: GenServer.cast(clock, :stop)
   def stop(clock) when is_binary(clock), do: stop(whereis(clock))
   
-  def press(clock, index), do: GenServer.cast(clock, {:press, index})
+  def press(clock, index) when is_pid(clock), do: GenServer.cast(clock, {:press, index})
+  def press(clock) when is_binary(clock), do: press(whereis(clock))
   
-  def pause(clock), do: GenServer.cast(clock, :pause)
+  def pause(clock) when is_pid(clock), do: GenServer.cast(clock, :pause)
+  def pause(clock) when is_binary(clock), do: pause(whereis(clock))
   
-  def resume(clock), do: GenServer.cast(clock, :resume)
+  def resume(clock) when is_pid(clock), do: GenServer.cast(clock, :resume)
+  def resume(clock) when is_binary(clock), do: resume(whereis(clock))
   
-  def reset(clock), do: GenServer.cast(clock, :reset)
+  def reset(clock) when is_pid(clock), do: GenServer.cast(clock, :reset)
+  def reset(clock) when is_binary(clock), do: reset(whereis(clock))
   
   # SERVER 
   
