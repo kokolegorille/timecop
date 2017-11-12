@@ -10,7 +10,7 @@ defmodule Timecop.Clock do
     uuid: nil,
     count: 0,
     status: :running,
-    number_of_clocks: nil,    
+    number_of_clocks: @default_number_of_clocks,    
     active_clock: 0,
     remainings: %{},
     ticker_ref: nil,
@@ -192,7 +192,7 @@ defmodule Timecop.Clock do
     status: status, 
     active_clock: active_clock,
     remainings: remainings
-  } = state) do
+  }) do
     %{
       count: count,
       status: status,
@@ -212,7 +212,7 @@ defmodule Timecop.Clock do
     active_clock = Map.get(initial_state, :active_clock, 0)
     
     remainings = 0..(number_of_clocks - 1) |> Enum.reduce(%{}, fn x, acc -> 
-      key = get_key(active_clock)
+      key = get_key(x)
       
       # Setup initial time, based on settings
       # Can setup multiple periods
