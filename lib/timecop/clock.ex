@@ -41,6 +41,8 @@ defmodule Timecop.Clock do
   
   def resume(clock), do: GenServer.cast(clock, :resume)
   
+  def reset(clock), do: GenServer.cast(clock, :reset)
+  
   # SERVER 
   
   def init(initial_state) do
@@ -135,6 +137,8 @@ defmodule Timecop.Clock do
   end
   def handle_cast(:resume, state), do: {:noreply, state}
   
+  def handle_cast(:reset, state), do: {:noreply, state}
+  
   def handle_cast(:stop, state), do: {:stop, :normal, %{state | status: :closing}}
   
   def handle_info(:tick, %{
@@ -179,8 +183,18 @@ defmodule Timecop.Clock do
   end
   
   # Customize state here!
-  defp serialize_state(state) do
-    state
+  defp serialize_state(%{
+    count: count, 
+    status: status, 
+    active_clock: active_clock,
+    remainings: remainings
+  } = state) do
+    %{
+      count: count,
+      status: status,
+      active_clock: active_clock,
+      remainings: remainings
+    }
   end
   
   defp update_active_clock(active_clock, remainings, elapsed) do
